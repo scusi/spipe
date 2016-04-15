@@ -51,33 +51,5 @@ func loop(c net.Conn) {
         read, err := io.Copy(c, os.Stdout)
         check(err)
         log.Printf("%d byte read from network\n", read)
-        /* 
-        // read from stdin
-        inbuf := make([]byte, 1024)
-        icount, err := os.Stdin.Read(inbuf)
-        checkFatal(err)
-        if verbose == true {
-            log.Printf("read %d byte\n", icount)
-            log.Printf("data read: %s\n", inbuf)
-        }
-        // write to network connection
-        c.Write(inbuf)
-
-        outbuf := make([]byte, 1024)
-        ocount, err := c.Read(outbuf)
-        checkFatal(err)
-        if verbose == true {
-            log.Printf("read %d byte from network\n", ocount)
-        }
-        if bytes.HasSuffix([]byte("\n"), outbuf) == true {
-            fmt.Printf("%s", outbuf)
-        }
-        if bytes.HasSuffix([]byte("\n\r"), outbuf) == true {
-            fmt.Printf("%s", outbuf)
-        } else {
-            log.Printf("%0x\n", outbuf)
-            fmt.Printf("%s\n", outbuf)
-        }
-        */
     }
 }
