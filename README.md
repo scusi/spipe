@@ -8,7 +8,7 @@ Usage
 
 Set up a spipe listener on port 127.0.0.1:8080
 
- $> spipecat -m listen -k MyLittleSecret -h 127.0.0.1 -p 8080
+ ```$> spipecat -m listen -k MyLittleSecret -h 127.0.0.1 -p 8080```
 
 
 Connect to the listener set up above
