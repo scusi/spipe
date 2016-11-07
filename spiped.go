@@ -31,7 +31,7 @@ var transferedBytes = float64(0)
 
 func init() {
 	flag.StringVar(&mode, "m", "listen", "mode to use (listen, dial, listen_forward, dial_forward), default is: listen")
-	flag.StringVar(&sharedKeyA, "k", "foobarTest1234", "shared key to use")
+	flag.StringVar(&sharedKeyA, "k", "spipe.key", "file to read shared key from")
 	flag.StringVar(&host, "h", "127.0.0.1", "host to connect to or listen on")
 	flag.StringVar(&port, "p", "8080", "port to connect to or listen on")
 	flag.StringVar(&forwardHostPort, "forward", "127.0.0.1:22", "host to forward connections to")
