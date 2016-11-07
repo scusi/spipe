@@ -1,3 +1,5 @@
+// a simple spiped go implementation - compatible with the original spipe command from https://github.com/Tarsnap/spiped
+//
 package main
 
 import (
@@ -5,7 +7,9 @@ import (
 	"fmt"
 	"github.com/dchest/spipe"
 	"io"
+	"io/ioutil"
 	"log"
+	"math"
 	"net"
 	"os"
 )
@@ -14,7 +18,16 @@ var mode string
 var sharedKeyA string
 var host string
 var port string
+var verbose bool
 var forwardHostPort string
+
+// maxBytesPerSession is the maximum of bytes to be allowed to be transfered per session.
+// otherwise security considerations will not hold true.
+// See: https://github.com/Tarsnap/spiped/blob/master/DESIGN.md
+var maxBytesPerSession = math.Pow(float64(2), float64(64))
+
+// counter for bytes beeing transfered in this session
+var transferedBytes = float64(0)
 
 func init() {
 	flag.StringVar(&mode, "m", "listen", "mode to use (listen, dial, listen_forward, dial_forward), default is: listen")
@@ -22,6 +35,7 @@ func init() {
 	flag.StringVar(&host, "h", "127.0.0.1", "host to connect to or listen on")
 	flag.StringVar(&port, "p", "8080", "port to connect to or listen on")
 	flag.StringVar(&forwardHostPort, "forward", "127.0.0.1:22", "host to forward connections to")
+	flag.BoolVar(&verbose, "v", false, "be verbose if true, default is: false")
 	flag.Usage = Usage
 }
 
@@ -55,7 +69,19 @@ func Usage() {
 
 func main() {
 	flag.Parse()
-	sharedKey := []byte(sharedKeyA)
+	if verbose {
+		log.Printf("Maximale Anzahl übertragbarer bytes in dieser Sitzung: %.0f\n", maxBytesPerSession)
+	}
+	// read key from file
+	sharedKey, err := ioutil.ReadFile(sharedKeyA)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// read key from string
+	//sharedKey := []byte(sharedKeyA)
+	if verbose {
+		log.Printf("connection key is set to: '%x'\n", sharedKey)
+	}
 	hopo := net.JoinHostPort(host, port)
 	switch mode {
 	case "listen":
@@ -71,6 +97,9 @@ func main() {
 			if nil != err {
 				log.Println("Accept Error!")
 				continue
+			}
+			if verbose {
+				log.Printf("accepted connection from '%v'\n", conn.RemoteAddr())
 			}
 
 			tcp_con_handle(conn)
@@ -136,8 +165,10 @@ func tcp_con_handle(con net.Conn) {
 	select {
 	case <-chan_to_stdout:
 		log.Println("Remote connection is closed")
+		log.Printf("%.0f bytes transfered\n", transferedBytes)
 	case <-chan_to_remote:
 		log.Println("Local program is terminated")
+		log.Printf("%.0f bytes transfered\n", transferedBytes)
 	}
 }
 
@@ -168,6 +199,11 @@ func stream_copy(src io.Reader, dst io.Writer) <-chan int {
 			sync_channel <- 0 // Notify that processing is finished
 		}()
 		for {
+			// make sure we do not transfer more than 2^64 byte per session
+			if transferedBytes >= maxBytesPerSession {
+				log.Println("transfered bytes have reached the maximum allowed, aborting")
+				break
+			}
 			var nBytes int
 			var err error
 			nBytes, err = src.Read(buf)
@@ -177,6 +213,8 @@ func stream_copy(src io.Reader, dst io.Writer) <-chan int {
 				}
 				break
 			}
+			// count bytes transfered (read)
+			transferedBytes += float64(nBytes)
 			_, err = dst.Write(buf[0:nBytes])
 			if err != nil {
 				log.Fatalf("Write error: %s\n", err)
