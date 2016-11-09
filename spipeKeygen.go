@@ -1,3 +1,6 @@
+// spipeKeygen - generates a key file suitable to be used by spipe tools
+// reads 32 byte from random and writes to file named 'spipe.key' in the
+// local directory.
 package main
 
 import (
