@@ -77,8 +77,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// read key from string
-	//sharedKey := []byte(sharedKeyA)
 	if verbose {
 		log.Printf("connection key is set to: '%x'\n", sharedKey)
 	}
@@ -154,7 +152,6 @@ func main() {
 			tcp_con_forward(conn, dst)
 		}
 	}
-
 }
 
 // Handles TC connection and perform synchorinization:
