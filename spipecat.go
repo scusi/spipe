@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/dchest/spipe"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -16,12 +17,14 @@ var mode string
 var sharedKeyA string
 var host string
 var port string
+var verbose bool
 
 func init() {
 	flag.StringVar(&mode, "m", "dial", "mode to use (listen, dial), default is: dial")
-	flag.StringVar(&sharedKeyA, "k", "", "shared key to use")
+	flag.StringVar(&sharedKeyA, "k", "spipe.key", "shared key file to use")
 	flag.StringVar(&host, "h", "127.0.0.1", "host to connect to")
 	flag.StringVar(&port, "p", "8080", "port to connect to")
+	flag.BoolVar(&verbose, "v", false, "verbose mode on if true, default: false")
 	checkFlags()
 }
 
@@ -41,7 +44,14 @@ func checkFlags() {
 
 func main() {
 	flag.Parse()
-	sharedKey := []byte(sharedKeyA)
+	// read key from file
+	sharedKey, err := ioutil.ReadFile(sharedKeyA)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if verbose {
+		log.Printf("connection key is set to: '%x'\n", sharedKey)
+	}
 	hopo := net.JoinHostPort(host, port)
 	switch mode {
 	case "listen":
