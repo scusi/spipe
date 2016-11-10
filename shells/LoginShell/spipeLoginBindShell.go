@@ -67,9 +67,14 @@ func LoginShell(sharedKey []byte, network, address string) {
 			if err != nil {
 				log.Fatalf("Start: %s", err.Error())
 			}
+			// authenticate user
 			err = t.Authenticate(0)
+			// if auth fails, print a log message, user message and close connection
 			if err != nil {
-				log.Fatalf("Authenticate: %s", err.Error())
+				log.Printf("Authenticate: %s", err.Error())
+				fmt.Fprintf(c, "Authenticate: %s\n", err.Error())
+				c.Close()
+				return
 			}
 			fmt.Fprintln(c, "Authentication succeeded!")
 			fmt.Fprintln(c, "starting a shell...")
