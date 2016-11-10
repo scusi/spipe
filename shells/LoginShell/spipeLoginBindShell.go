@@ -11,6 +11,7 @@ package main
 import (
 	"bufio"
 	"errors"
+	"flag"
 	"fmt"
 	"github.com/dchest/spipe"
 	"github.com/msteinert/pam"
@@ -19,6 +20,14 @@ import (
 	"net"
 	"os/exec"
 )
+
+var address string // listening address, e.g. 127.0.0.1:8080
+var keyFile string // file to read key from, use spipeKeygen.go to generate a key file
+
+func init() {
+	flag.StringVar(&address, "l", ":7777", "adress to bind to")
+	flag.StringVar(&keyFile, "k", "spipe.key", "file to read key from")
+}
 
 func LoginShell(sharedKey []byte, network, address string) {
 	l, _ := spipe.Listen(sharedKey, network, address)
@@ -75,9 +84,10 @@ func LoginShell(sharedKey []byte, network, address string) {
 }
 
 func main() {
-	sharedKey, err := ioutil.ReadFile("spipe.key")
+	flag.Parse()
+	sharedKey, err := ioutil.ReadFile(keyFile)
 	if err != nil {
 		panic(err)
 	}
-	LoginShell(sharedKey, "tcp", ":8000")
+	LoginShell(sharedKey, "tcp", address)
 }
