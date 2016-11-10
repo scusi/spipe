@@ -2,7 +2,7 @@
 //
 // known limitations:
 //  - echo is not set to off for password input
-//  - you have a shell after authentication, but no promt.
+//  - you have a shell after authentication, but no prompt.
 //  - PAM authentication is only working for the user this prog runs as
 //    Unless run as priviledged user such as root, WHICH IS NOT RECOMMENDED!
 //
