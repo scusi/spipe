@@ -7,12 +7,9 @@ a simple spipe daemon and client aswell as a spipe netcat clone, written in gola
 
 generates a new spipe suitable key, writes to _spipe.key_ in local directory
 
-```spipeKeygen```
-
 ## spiped
 
-start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80
-	```spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key```
+start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80 ```spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key```
 
 start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888 
 		```spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key```
