@@ -1,11 +1,17 @@
-//package shells
+// a simple login shell via spipes
+//
+// known limitations:
+//  - echo is not set to off for password input
+//  - you have a shell after authentication, but no promt.
+//  - PAM authentication is only working for the user this prog runs as
+//    Unless run as priviledged user such as root, WHICH IS NOT RECOMMENDED!
+//
 package main
 
 import (
 	"bufio"
 	"errors"
 	"fmt"
-	//"github.com/bgentry/speakeasy"
 	"github.com/dchest/spipe"
 	"github.com/msteinert/pam"
 	"io/ioutil"
@@ -27,16 +33,11 @@ func LoginShell(sharedKey []byte, network, address string) {
 			t, err := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
 				switch s {
 				case pam.PromptEchoOff:
-					//return speakeasy.FAsk(c, msg)
-					//return speakeasy.Ask(msg)
-					/*
-					 */
 					fmt.Fprint(c, msg+" ")
 					input, err := bufio.NewReader(c).ReadString('\n')
 					if err != nil {
 						return "", err
 					}
-					//log.Printf("PromptEchoOff read: %s", input)
 					return input[:len(input)-1], nil
 				case pam.PromptEchoOn:
 					fmt.Fprint(c, msg+" ")
@@ -44,7 +45,6 @@ func LoginShell(sharedKey []byte, network, address string) {
 					if err != nil {
 						return "", err
 					}
-					//log.Printf("PromptEchoOn read: %s\n", input)
 					return input[:len(input)-1], nil
 				case pam.ErrorMsg:
 					log.Print(c, msg)
