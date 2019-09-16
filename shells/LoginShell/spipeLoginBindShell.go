@@ -1,5 +1,9 @@
 // a simple login shell via spipes
 //
+// needs pam development files.
+// on debian based systems install with: ```sudo apt install libpam0g-dev```.
+// on red-hat based systems install with: ```sudo yum install pam-devel```
+//
 // known limitations:
 //  - echo is not set to off for password input
 //  - you have a shell after authentication, but no prompt.
