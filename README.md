@@ -2,10 +2,14 @@ spipe tools
 ===========
 
 a simple spipe daemon and client aswell as a spipe netcat clone, written in golang.
+A tool to generate keys suitable for spipe tools is also included.
+
+All tools are under the _cmd_ directory.
 
 ## spipeKeygen
 
-generates a new spipe suitable key, writes to _spipe.key_ in local directory
+generates a new spipe suitable key, writes to _spipe.key_ in local directory.
+
 
 ## spiped
 
