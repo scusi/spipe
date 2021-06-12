@@ -13,18 +13,27 @@ generates a new spipe suitable key, writes to _spipe.key_ in local directory.
 
 ## spiped
 
-start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80 ```spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key```
+start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80 
+```
+spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key
+```
 
 start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888 
-		```spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key```
+```
+spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key
+```
 
 recieve a file via spiped on 80.244.247.218:8080
 
-		```spiped -m listen -h 80.244.247.218 -p 8080 -k spipe.key > file```
+```
+spiped -m listen -h 80.244.247.218 -p 8080 -k spipe.key > file
+```
 
 send a file via spiped to 80.244.247.218:8080
 
-	```cat file | spiped -m dial -h 80.244.247.218 -p 8080 -k spipe.key```
+```
+cat file | spiped -m dial -h 80.244.247.218 -p 8080 -k spipe.key
+```
 
 ## spipecat
 
