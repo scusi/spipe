@@ -1,0 +1,16 @@
+github.com/bgentry/speakeasy v0.1.0 h1:ByYyxL9InA1OWqxJqqp2A5pYHUrCiAL6K3J+LKSsQkY=
+github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
+github.com/dchest/dhgroup14 v0.0.0-20160330194702-fcdeb176be79 h1:0C0lTjM2RXOb0u2mhrxCpbijto7KRD5uMK0OeycLGaI=
+github.com/dchest/dhgroup14 v0.0.0-20160330194702-fcdeb176be79/go.mod h1:PFv66f5GjvlRmF37sCH4982pPxJvz4m5BdeqOmchzIk=
+github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730 h1:Fp3UlZ3JEw2l/lF1NRNP1jorJCqj27FMkzKGvHkW7a0=
+github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730/go.mod h1:7nEsCVVC3V6JfiXPsbiyhM62ZxFWmHUVtIvnCplAT3I=
+github.com/msteinert/pam v0.0.0-20201130170657-e61372126161 h1:XQ1+fYPzaWZCVdu1xzjL917Xy9Yb7imLEU0wHelafKA=
+github.com/msteinert/pam v0.0.0-20201130170657-e61372126161/go.mod h1:np1wUFZ6tyoke22qDJZY40URn9Ae51gX7ljIWXN5TJs=
+golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 h1:7I4JAnoQBe7ZtJcBaYHi5UtiO8tQHbUSXxL+pnGRANg=
+golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
+golang.org/x/net v0.0.0-20210226172049-e18ecbb05110/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=
+golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
+golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
