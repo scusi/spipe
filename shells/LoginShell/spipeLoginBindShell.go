@@ -17,12 +17,13 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/dchest/spipe"
-	"github.com/msteinert/pam"
 	"io/ioutil"
 	"log"
 	"net"
 	"os/exec"
+
+	"github.com/dchest/spipe"
+	"github.com/msteinert/pam"
 )
 
 var address string // listening address, e.g. 127.0.0.1:8080
@@ -77,6 +78,15 @@ func LoginShell(sharedKey []byte, network, address string) {
 			if err != nil {
 				log.Printf("Authenticate: %s", err.Error())
 				fmt.Fprintf(c, "Authenticate: %s\n", err.Error())
+				c.Close()
+				return
+			}
+
+			err = t.AcctMgmt(0)
+			// if AcctMgmt fails, print a log message, user message and close connection
+			if err != nil {
+				log.Printf("AcctMgmt: %s", err.Error())
+				fmt.Fprintf(c, "AcctMgmt: %s\n", err.Error())
 				c.Close()
 				return
 			}
