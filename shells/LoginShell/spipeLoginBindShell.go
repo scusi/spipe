@@ -76,6 +76,14 @@ func LoginShell(sharedKey []byte, network, address string) {
 				c.Close()
 				return
 			}
+			// check also if account is valid, e.g. not disabled.
+			err = t.AcctMgmt(0)
+			if err != nil {
+				log.Printf("Authenticate: %s", err.Error())
+				fmt.Fprintf(c, "Authenticate: %s\n", err.Error())
+				c.Close()
+				return
+			}
 			fmt.Fprintln(c, "Authentication succeeded!")
 			fmt.Fprintln(c, "starting a shell...")
 			cmd := exec.Command("/bin/bash", "--login")
