@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/dchest/spipe"
+	"io/ioutil"
 	"io"
 	"log"
 	"net"
@@ -11,19 +12,32 @@ import (
 
 var mode string
 var sharedKeyA string
+var keyfile string
 var host string
 var port string
+var err error
 
 func init() {
 	flag.StringVar(&mode, "m", "dial", "mode to use (listen, dial), default is: dial")
-	flag.StringVar(&sharedKeyA, "k", "foobarTest1234", "shared key to use")
+	flag.StringVar(&sharedKeyA, "k", "", "shared key to use")
+	flag.StringVar(&keyfile, "kf", "spipe.key", "keyfile to use")
 	flag.StringVar(&host, "h", "127.0.0.1", "host to connect to")
 	flag.StringVar(&port, "p", "8080", "port to connect to")
 }
 
 func main() {
 	flag.Parse()
-	sharedKey := []byte(sharedKeyA)
+	var sharedKey []byte
+	if sharedKeyA != "" {
+		sharedKey = []byte(sharedKeyA)
+	} else if keyfile != "" {
+		sharedKey, err = ioutil.ReadFile(keyfile)
+		if err != nil {
+			log.Printf("could not read keyfile '%s'", keyfile)
+			log.Printf("specify 'k' or 'kf' flag")
+			log.Fatal(err)
+		}
+	}
 	hopo := net.JoinHostPort(host, port)
 	switch mode {
 	case "listen":

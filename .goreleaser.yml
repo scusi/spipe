@@ -1,10 +1,11 @@
+version: 2
 # This is an example goreleaser.yaml file with some sane defaults.
 # Make sure to check the documentation at http://goreleaser.com
 builds:
- - 
+ -
   id: spipecat
   main: cmd/spipecat/spipecat.go
-  binary: spipecat 
+  binary: spipecat
   goos:
           - windows
           - linux
@@ -17,7 +18,7 @@ builds:
             goarch: 386
   env:
   - CGO_ENABLED=0
- - 
+ -
   id: spipec
   main: cmd/spipec/spipec.go
   binary: spipec
@@ -33,7 +34,7 @@ builds:
             goarch: 386
   env:
   - CGO_ENABLED=0
- - 
+ -
   id: spiped
   main: cmd/spiped/spiped.go
   binary: spiped

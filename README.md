@@ -10,15 +10,19 @@ All tools are under the _cmd_ directory.
 
 generates a new spipe suitable key, writes to _spipe.key_ in local directory.
 
+Instead of _spipeKeygen_ you can simply use:
+```
+openssl rand 32 > spipe.key
+```
 
 ## spiped
 
-start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80 
+start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80
 ```
 spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key
 ```
 
-start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888 
+start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888
 ```
 spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key
 ```
