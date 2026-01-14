@@ -28,6 +28,13 @@ ListenAddress 127.0.0.1
 ListenAddress ::1
 ```
 
+Build spiped and spipeKeygen, or download from [release page].
+
+```
+go build ./cmd/spiped
+go build ./cmd/spipeKeygen
+```
+
 Then install spiped and a service file to have spiped listen on `*:8022` and forward to localhost:22
 ```
 cp spiped /usr/local/bin/spiped
