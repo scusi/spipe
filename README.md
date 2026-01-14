@@ -39,9 +39,9 @@ go build ./cmd/spipeKeygen
 
 Then install spiped and a service file to have spiped listen on `*:8022` and forward to localhost:22
 ```
-cp spiped /usr/local/bin/spiped
-cp examples/spiped-ssh.service /etc/systemd/system/
-./spipeKeygen -o /etc/ssh/spiped.key
+sudo cp spiped /usr/local/bin/spiped
+sudo cp examples/spiped-ssh.service /etc/systemd/system/
+sudo ./spipeKeygen -o /etc/ssh/spiped.key
 sudo systemctl daemon-reload
 sudo systemctl enable spiped-ssh.service
 sudo systemctl start spiped-ssh.service 
