@@ -4,6 +4,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"crypto/rand"
 	"io/ioutil"
 	"flag"
@@ -27,7 +28,8 @@ func main() {
 		log.Fatal(err)
 	}
 	if base64Out {
-		fmt.Printf("key: %x\n", randbuf)
+		encodedStr := base64.StdEncoding.EncodeToString(randbuf)
+		fmt.Printf("%s\n", encodedStr)
 	} else {
 		log.Printf("%d bytes read from random source and written to 'spipe.key'\n", nBytes)
 		err = ioutil.WriteFile(outfile, randbuf, 0600)
