@@ -34,7 +34,7 @@ var transferedBytes = float64(0)
 func init() {
 	flag.StringVar(&mode,            "m", "listen_forward", "mode to use (listen, dial, listen_forward, dial_forward), default is: listen_forward")
 	flag.StringVar(&sharedKeyA,      "k", "/etc/ssh/spiped.key", "file to read shared key from")
-	flag.StringVar(&host,            "h", "127.0.0.1", "host to connect to or listen on")
+	flag.StringVar(&host,            "h", "", "host to connect to or listen on, default is any interface")
 	flag.StringVar(&port,            "p", "8022", "port to connect to or listen on")
 	flag.StringVar(&forwardHostPort, "forward", "127.0.0.1:22", "host to forward connections to")
 	flag.StringVar(&logfile,         "l", "/var/log/spiped.log", "port to connect to or listen on")
