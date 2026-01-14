@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/spiped -m listen_forward -h * -p 8022 -forward 127.0.0.1:22 -k /etc/ssh/spiped.key
+ExecStart=/usr/local/bin/spiped -m listen_forward -h "" -p 8022 -forward 127.0.0.1:22 -k /etc/ssh/spiped.key
 Restart=always
 
 [Install]
