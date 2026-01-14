@@ -17,6 +17,28 @@ openssl rand 32 > spipe.key
 
 ## spiped
 
+By default, if you just start `./spiped` it will listen on `*:8022` for spipe encrypted connections and forward playtext connections to 127.0.0.1:22.
+Together with the provided systemd service file you can protect your sshd with spiped.
+
+Change your `/etc/ssh/sshd_config` to listen only to 127.0.0.1:22
+
+```
+# Nur localhost (IPv4 und IPv6)
+ListenAddress 127.0.0.1
+ListenAddress ::1
+```
+
+Then install spiped and a service file to have spiped listen on `*:8022` and forward to localhost:22
+```
+cp spiped /usr/local/bin/spiped
+cp examples/spiped-ssh.service /etc/systemd/system/
+./spipeKeygen -o /etc/ssh/spiped.key
+sudo systemctl daemon-reload
+sudo systemctl enable spiped-ssh.service
+sudo systemctl start spiped-ssh.service 
+```
+
+
 start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80
 ```
 spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key
