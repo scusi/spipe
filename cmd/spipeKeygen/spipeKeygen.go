@@ -31,7 +31,7 @@ func main() {
 		encodedStr := base64.StdEncoding.EncodeToString(randbuf)
 		fmt.Printf("%s\n", encodedStr)
 	} else {
-		log.Printf("%d bytes read from random source and written to 'spipe.key'\n", nBytes)
+		log.Printf("%d bytes read from random source and written to '%s'\n", nBytes, outfile)
 		err = ioutil.WriteFile(outfile, randbuf, 0600)
 		if err != nil {
 			log.Fatal(err)
