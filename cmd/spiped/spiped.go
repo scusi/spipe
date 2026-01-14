@@ -18,7 +18,9 @@ var mode string
 var sharedKeyA string
 var host string
 var port string
+var logfile string
 var verbose bool
+var disableLog bool
 var forwardHostPort string
 
 // maxBytesPerSession is the maximum of bytes to be allowed to be transfered per session.
@@ -30,12 +32,14 @@ var maxBytesPerSession = math.Pow(float64(2), float64(64))
 var transferedBytes = float64(0)
 
 func init() {
-	flag.StringVar(&mode, "m", "listen", "mode to use (listen, dial, listen_forward, dial_forward), default is: listen")
-	flag.StringVar(&sharedKeyA, "k", "spipe.key", "file to read shared key from")
-	flag.StringVar(&host, "h", "127.0.0.1", "host to connect to or listen on")
-	flag.StringVar(&port, "p", "8080", "port to connect to or listen on")
+	flag.StringVar(&mode,            "m", "listen_forward", "mode to use (listen, dial, listen_forward, dial_forward), default is: listen_forward")
+	flag.StringVar(&sharedKeyA,      "k", "/etc/ssh/spiped.key", "file to read shared key from")
+	flag.StringVar(&host,            "h", "127.0.0.1", "host to connect to or listen on")
+	flag.StringVar(&port,            "p", "8022", "port to connect to or listen on")
 	flag.StringVar(&forwardHostPort, "forward", "127.0.0.1:22", "host to forward connections to")
-	flag.BoolVar(&verbose, "v", false, "be verbose if true, default is: false")
+	flag.StringVar(&logfile,         "l", "/var/log/spiped.log", "port to connect to or listen on")
+	flag.BoolVar(&verbose,           "v", false, "be verbose if true, default is: false")
+	flag.BoolVar(&disableLog,        "no-log", false, "disbales logging if true, default is: false")
 	flag.Usage = Usage
 }
 
@@ -47,19 +51,22 @@ Modes:
 	dial_forward	starts a plaintext listener and forwards to an spipe endpoint
 
 Examples:
+	// generate a key
+	spipeKeygen -o spipe.key
 
 	// start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80
-	spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k 9jfdf807n987976xnwfru897234ÖUJDEUW
+	spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key 
 
 	// start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888
-	spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k testtestetst
+	spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key
 
 	// recieve a file via spiped on 80.244.247.218:8080
-	spiped -m listen -h 80.244.247.218 -p 8080 -k testtesttest > file
+	spiped -m listen -h 80.244.247.218 -p 8080 -k spipe.key > file
 
 	// send a file via spiped to 80.244.247.218:8080
-	cat file | spiped -m dial -h 80.244.247.218 -p 8080 -k testtesttest
+	cat file | spiped -m dial -h 80.244.247.218 -p 8080 -k spipe.key
 `
+
 
 func Usage() {
 	fmt.Printf("Usage of %s: -m MODE -h HOST -p PORT -k KEY [-forward HOST:PORT]\n\nArguments:\n", os.Args[0])
@@ -69,6 +76,7 @@ func Usage() {
 
 func main() {
 	flag.Parse()
+	initLogging()
 	if verbose {
 		log.Printf("Maximale Anzahl übertragbarer bytes in dieser Sitzung: %.0f\n", maxBytesPerSession)
 	}
@@ -114,22 +122,23 @@ func main() {
 		// open spipe listener
 		ln, err := spipe.Listen(sharedKey, "tcp", hopo)
 		if nil != err {
-			log.Println("Bind Error!")
+			log.Printf("Bind Error: %s\n", err.Error())
 			return
 		}
 
 		for {
 			conn, err := ln.Accept()
 			if nil != err {
-				log.Println("Accept Error!")
+				log.Printf("Accept Error: %s\n", err.Error())
 				continue
 			}
+			log.Printf("Accepted Connection from %s\n", conn.RemoteAddr())
 			// dial to backend (plain tcp, no spipe)
 			dst, err := net.Dial("tcp", forwardHostPort)
 			if err != nil {
 				log.Fatal(err)
 			}
-
+			log.Printf("Forward Connection from %s to %s\n", conn.RemoteAddr(), dst.RemoteAddr())
 			tcp_con_forward(conn, dst)
 		}
 	case "dial_forward":
@@ -220,3 +229,14 @@ func stream_copy(src io.Reader, dst io.Writer) <-chan int {
 	}()
 	return sync_channel
 }
+
+func initLogging() {
+	if !disableLog {
+		logFile, err := os.OpenFile(logfile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatalf("Failed to open log file: %v", err)
+		}
+		log.SetOutput(logFile)
+	}
+}
+
