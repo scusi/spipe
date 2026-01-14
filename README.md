@@ -10,7 +10,7 @@ All tools are under the _cmd_ directory.
 
 generates a new spipe suitable key, writes to _spipe.key_ in local directory.
 
-Instead of _spipeKeygen_ you can simply use:
+Instead of `spipeKeygen` you can simply use:
 ```
 openssl rand 32 > spipe.key
 ```
