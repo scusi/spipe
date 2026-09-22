@@ -1,8 +1,6 @@
 module github.com/scusi/spipe
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.26.0
 
 require (
 	github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730
@@ -11,5 +9,5 @@ require (
 
 require (
 	github.com/dchest/dhgroup14 v0.0.0-20160330194702-fcdeb176be79 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/crypto v0.57.0 // indirect
 )
