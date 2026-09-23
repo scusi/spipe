@@ -19,7 +19,7 @@ openssl rand 32 > spipe.key
 
 ### Quickstart
 
-By default, if you just start `./spiped` it will listen on `*:8022` for spipe encrypted connections and forward playtext connections to 127.0.0.1:22.
+`spiped` is command line compatible with the [original spiped](https://manpages.debian.org/testing/spiped/spiped.1.en.html): it takes encrypted connections on the source socket (`-d`) or sends encrypted connections to the target socket (`-e`), using the options `-s`, `-t`, `-k`, `-F` and more.
 Together with the provided systemd service file you can protect your sshd with spiped.
 
 Change your `/etc/ssh/sshd_config` to listen only to 127.0.0.1:22
@@ -49,26 +49,34 @@ sudo systemctl start spiped-ssh.service
 
 ### Example Usage
 
-start a spipe listener on 80.244.247.218:8888 and forward to 80.244.247.5:80
-```
-spiped -m listen_forward -h 80.244.247.218 -p 8888 -forward 80.244.247.5:80 -k spipe.key
-```
-
-start a plaintext listener on 80.244.247.5:8080 and forward to spipe endpoint 80.244.247.218:8888
-```
-spiped -m dial_forward -h 80.244.247.5 -p 8080 -forward 80.244.247.218:8888 -k spipe.key
-```
-
-recieve a file via spiped on 80.244.247.218:8080
+take encrypted connections on 80.244.247.218:8888 and forward unencrypted to 80.244.247.5:80
 
 ```
-spiped -m listen -h 80.244.247.218 -p 8080 -k spipe.key > file
+spiped -d -s 80.244.247.218:8888 -t 80.244.247.5:80 -k spipe.key
 ```
 
-send a file via spiped to 80.244.247.218:8080
+take unencrypted connections on 80.244.247.5:8080 and forward them encrypted to the spipe endpoint 80.244.247.218:8888
 
 ```
-cat file | spiped -m dial -h 80.244.247.218 -p 8080 -k spipe.key
+spiped -e -s 80.244.247.5:8080 -t 80.244.247.218:8888 -k spipe.key
+```
+
+run in the foreground, useful with systemd or daemontools
+
+```
+spiped -d -s [::]:8022 -t 127.0.0.1:22 -k spipe.key -F
+```
+
+use a unix domain socket as target
+
+```
+spiped -d -s [::]:8022 -t /run/sshd.sock -k spipe.key -F
+```
+
+limit the number of simultaneous connections and disable keep-alives
+
+```
+spiped -d -s [::]:8022 -t 127.0.0.1:22 -k spipe.key -F -n 16 -j
 ```
 
 ## spipecat
