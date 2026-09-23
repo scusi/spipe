@@ -4,6 +4,7 @@ go 1.26.0
 
 require (
 	github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730
+	github.com/google/uuid v1.6.0
 	github.com/msteinert/pam v1.2.0
 )
 

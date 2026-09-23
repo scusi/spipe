@@ -2,6 +2,8 @@ github.com/dchest/dhgroup14 v0.0.0-20160330194702-fcdeb176be79 h1:0C0lTjM2RXOb0u
 github.com/dchest/dhgroup14 v0.0.0-20160330194702-fcdeb176be79/go.mod h1:PFv66f5GjvlRmF37sCH4982pPxJvz4m5BdeqOmchzIk=
 github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730 h1:Fp3UlZ3JEw2l/lF1NRNP1jorJCqj27FMkzKGvHkW7a0=
 github.com/dchest/spipe v0.0.0-20141211082155-3e9327003730/go.mod h1:7nEsCVVC3V6JfiXPsbiyhM62ZxFWmHUVtIvnCplAT3I=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/msteinert/pam v1.2.0 h1:mYfjlvN2KYs2Pb9G6nb/1f/nPfAttT/Jee5Sq9r3bGE=
 github.com/msteinert/pam v1.2.0/go.mod h1:d2n0DCUK8rGecChV3JzvmsDjOY4R7AYbsNxAT+ftQl0=
 golang.org/x/crypto v0.57.0 h1:3ZVCjf8Ggz7zneR/EHRVx68Ctf+2pmIMP2UFhh9cC6M=
